@@ -1,33 +1,199 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <title>Gerenciamento de Vendas</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-  </head>
 
-  <body>
-   
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
+<head>
+  <title>Gerenciamento de Vendas</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+</head>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+<body>
+
+  <div id="app" class="container text-center bg-light">
+    <h1 class="my-4">Sistema de Gerenciamento de Vendas</h1>
+
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a href="" class="nav-link bg-info bg-opacity-25 text-dark" :class="{active: view === 'inicio'}"
+          @click="view = 'inicio'">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a href="" class="nav-link bg-info bg-opacity-25 text-dark" :class="{active: view === 'clientes'}"
+          @click="view = 'clientes'">Clientes</a>
+      </li>
+      <li class="nav-item">
+        <a href="" class="nav-link bg-info bg-opacity-25 text-dark" :class="{active: view === 'produtos'}"
+          @click="view = 'produtos'">Produtos</a>
+      </li>
+      <li class="nav-item">
+        <a href="" class="nav-link bg-info bg-opacity-25 text-dark" :class="{active: view === 'vendas'}"
+          @click="view = 'vendas'">Vendas</a>
+      </li>
+    </ul>
+
+    <div v-if="view === 'clientes'" class="my-4">
+      <h2 v-if="!estadoCliente"> Cadastrar Clientes</h2>
+      <h2 v-else>Editar Cliente</h2>
+      <div class="row">
+        <div class="col-md-12">
+          <form @submit.prevent="estadoCliente ? atualizarCliente() : adicionarCliente()">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="nomeCliente">Nome do Cliente: <b class="text-danger">*</b></label>
+                <input type="text" id="nomeCliente" v-model="novoCliente.nome" class="form-control" required>
+              </div>
+              <div class="col-md-2">
+                <label for="telefoneCliente">Telefone: <b class="text-danger">*</b></label>
+                <input type="text" id="telefoneCliente" v-model="novoCliente.telefone" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label for="emailCliente">Email: <b class="text-danger">*</b></label>
+                <input type="text" id="emailCliente" v-model="novoCliente.email" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label for="ruaCliente">Rua: <b class="text-danger">*</b></label>
+                <input type="text" id="ruaCliente" v-model="novoCliente.rua" class="form-control" required>
+              </div>
+              <div class="col-md-2">
+                <label for="numeroCliente">Número: <b class="text-danger">*</b></label>
+                <input type="number" id="numeroCliente" v-model="novoCliente.numero" class="form-control" required>
+              </div>
+              <div class="col-md-2">
+                <label for="bairroCliente">Bairro: <b class="text-danger">*</b></label>
+                <input type="text" id="bairroCliente" v-model="novoCliente.bairro" class="form-control" required>
+              </div>
+              <div class="col-md-2">
+                <label for="cidadeCliente">Cidade: <b class="text-danger">*</b></label>
+                <input type="text" id="cidadeCliente" v-model="novoCliente.cidade" class="form-control" required>
+              </div>
+              <div class="col-md-2">
+                <label for="estadoCliente">Estado: <b class="text-danger">*</b></label>
+                <select id="estadoCliente" v-model="novoCliente.estado" class="form-control" required>
+                  <option value="" disabled selected>UF</option>
+                  <option value="AC">AC</option>
+                  <option value="AL">AL</option>
+                  <option value="AP">AP</option>
+                  <option value="AM">AM</option>
+                  <option value="BA">BA</option>
+                  <option value="CE">CE</option>
+                  <option value="DF">DF</option>
+                  <option value="ES">ES</option>
+                  <option value="GO">GO</option>
+                  <option value="MA">MA</option>
+                  <option value="MT">MT</option>
+                  <option value="MS">MS</option>
+                  <option value="MG">MG</option>
+                  <option value="PA">PA</option>
+                  <option value="PB">PB</option>
+                  <option value="PR">PR</option>
+                  <option value="PE">PE</option>
+                  <option value="PI">PI</option>
+                  <option value="RJ">RJ</option>
+                  <option value="RN">RN</option>
+                  <option value="RS">RS</option>
+                  <option value="RO">RO</option>
+                  <option value="RR">RR</option>
+                  <option value="SC">SC</option>
+                  <option value="SP">SP</option>
+                  <option value="SE">SE</option>
+                  <option value="TO">TO</option>
+                </select>
+              </div>
+              <small class="form-text text-muted mt-4">Por favor, preencha todos os campos marcados com <b class="text-danger">*</b>.</small>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">{{ estadoCliente ? 'Atualizar Cliente' : 'Adicionar Cliente'
+              }}</button>
+            <button type="button" v-if="estadoCliente" @click="cancelarEdicaoCliente"
+              class="btn btn-secondary mt-4">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="mt-4">Lista de Clientes</h3>
+    <ul class="list-group">
+      <li class="list-group-item" v-for="cliente in clientes" :key="cliente.nome">
+        <div class="row align-items-center">
+          <div class="col">
+            <p class="mb-1"><strong>Nome do Cliente:</strong> {{ cliente.nome }}</p>
+            <p class="mb-1"><strong>Contato:</strong> {{ cliente.telefone }} | {{ cliente.email }}</p>
+            <p class="mb-1"><strong>Endereço:</strong> {{ cliente.rua }} , {{ cliente.bairro }} - {{ cliente.cidade }} | {{
+              cliente.estado }}</p>
+          </div>
+          <div class="col-auto">
+            <button @click="excluirCliente(cliente)" class="btn btn-danger">Excluir</button>
+            <button @click="editarCliente(cliente)" class="btn btn-warning">Editar</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <footer class="footer mt-auto py-2 bg-info bg-opacity-25 text-white">
+      <div class="container text-center">
+        <span class="text-muted">Copyright © 2024 | Versão: 2024.06.1606 | Sistema de Gerenciamento de Vendas</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        view: 'clientes',
+        clientes: [],
+        estadoCliente: null,
+        novoCliente: {
+          nome: '',
+          telefone: '',
+          email: '',
+          rua: '',
+          numero: '',
+          bairro: '',
+          cidade: '',
+          estado: ''
+        }
+      },
+      methods: {
+        adicionarCliente() {
+          this.clientes.push({ ...this.novoCliente });
+          this.limparFormularioCliente();
+        },
+        excluirCliente(cliente) {
+          this.clientes = this.clientes.filter(c => c !== cliente);
+        },
+        editarCliente(cliente) {
+          this.estadoCliente = cliente;
+          this.novoCliente = { ...cliente };
+        },
+        atualizarCliente() {
+          Object.assign(this.estadoCliente, this.novoCliente);
+          this.cancelarEdicaoCliente();
+        },
+        cancelarEdicaoCliente() {
+          this.limparFormularioCliente();
+          this.estadoCliente = null;
+        },
+        limparFormularioCliente() {
+          this.novoCliente = {
+            nome: '',
+            telefone: '',
+            email: '',
+            rua: '',
+            numero: '',
+            bairro: '',
+            cidade: '',
+            estado: ''
+          };
+        },
+      }
+    });
+  </script>
+</body>
+
 </html>
