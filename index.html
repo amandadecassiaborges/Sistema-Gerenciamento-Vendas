@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -10,32 +10,31 @@
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 </head>
 
-<body>
-
+<body class="bg-image" style="background-image: url('./fundo.jpg')">
   <div id="app" class="container text-center bg-light">
     <h1 class="my-4">Sistema de Gerenciamento de Vendas</h1>
 
     <ul class="nav justify-content-center">
       <li class="nav-item">
         <a href="" class="nav-link bg-info bg-opacity-25 text-dark" :class="{active: view === 'inicio'}"
-          @click="view = 'inicio'">Inicio</a>
+          @click.prevent="view = 'inicio'">Inicio</a>
       </li>
       <li class="nav-item">
         <a href="" class="nav-link bg-info bg-opacity-25 text-dark" :class="{active: view === 'clientes'}"
-          @click="view = 'clientes'">Clientes</a>
+          @click.prevent="view = 'clientes'">Clientes</a>
       </li>
       <li class="nav-item">
         <a href="" class="nav-link bg-info bg-opacity-25 text-dark" :class="{active: view === 'produtos'}"
-          @click="view = 'produtos'">Produtos</a>
+          @click.prevent="view = 'produtos'">Produtos</a>
       </li>
       <li class="nav-item">
         <a href="" class="nav-link bg-info bg-opacity-25 text-dark" :class="{active: view === 'vendas'}"
-          @click="view = 'vendas'">Vendas</a>
+          @click.prevent="view = 'vendas'">Vendas</a>
       </li>
     </ul>
 
     <div v-if="view === 'clientes'" class="my-4">
-      <h2 v-if="!estadoCliente"> Cadastrar Clientes</h2>
+      <h2 v-if="!estadoCliente">Cadastrar Clientes</h2>
       <h2 v-else>Editar Cliente</h2>
       <div class="row">
         <div class="col-md-12">
@@ -43,33 +42,33 @@
             <div class="form-group row">
               <div class="col-md-6">
                 <label for="nomeCliente">Nome do Cliente: <b class="text-danger">*</b></label>
-                <input type="text" id="nomeCliente" v-model="novoCliente.nome" class="form-control" required>
+                <input type="text" id="nomeCliente" v-model="novoCliente.nome" class="form-control" required />
               </div>
               <div class="col-md-2">
                 <label for="telefoneCliente">Telefone: <b class="text-danger">*</b></label>
-                <input type="text" id="telefoneCliente" v-model="novoCliente.telefone" class="form-control" required>
+                <input type="text" id="telefoneCliente" v-model="novoCliente.telefone" class="form-control" required />
               </div>
               <div class="col-md-4">
                 <label for="emailCliente">Email: <b class="text-danger">*</b></label>
-                <input type="text" id="emailCliente" v-model="novoCliente.email" class="form-control" required>
+                <input type="text" id="emailCliente" v-model="novoCliente.email" class="form-control" required />
               </div>
             </div>
             <div class="form-group row">
               <div class="col-md-4">
                 <label for="ruaCliente">Rua: <b class="text-danger">*</b></label>
-                <input type="text" id="ruaCliente" v-model="novoCliente.rua" class="form-control" required>
+                <input type="text" id="ruaCliente" v-model="novoCliente.rua" class="form-control" required />
               </div>
               <div class="col-md-2">
                 <label for="numeroCliente">Número: <b class="text-danger">*</b></label>
-                <input type="number" id="numeroCliente" v-model="novoCliente.numero" class="form-control" required>
+                <input type="number" id="numeroCliente" v-model="novoCliente.numero" class="form-control" required />
               </div>
               <div class="col-md-2">
                 <label for="bairroCliente">Bairro: <b class="text-danger">*</b></label>
-                <input type="text" id="bairroCliente" v-model="novoCliente.bairro" class="form-control" required>
+                <input type="text" id="bairroCliente" v-model="novoCliente.bairro" class="form-control" required />
               </div>
               <div class="col-md-2">
                 <label for="cidadeCliente">Cidade: <b class="text-danger">*</b></label>
-                <input type="text" id="cidadeCliente" v-model="novoCliente.cidade" class="form-control" required>
+                <input type="text" id="cidadeCliente" v-model="novoCliente.cidade" class="form-control" required />
               </div>
               <div class="col-md-2">
                 <label for="estadoCliente">Estado: <b class="text-danger">*</b></label>
@@ -104,94 +103,283 @@
                   <option value="TO">TO</option>
                 </select>
               </div>
-              <small class="form-text text-muted mt-4">Por favor, preencha todos os campos marcados com <b class="text-danger">*</b>.</small>
+              <small class="form-text text-muted mt-4">Por favor, preencha todos os campos marcados com
+                <b class="text-danger">*</b>.</small>
             </div>
-            <button type="submit" class="btn btn-primary mt-4">{{ estadoCliente ? 'Atualizar Cliente' : 'Adicionar Cliente'
-              }}</button>
-            <button type="button" v-if="estadoCliente" @click="cancelarEdicaoCliente"
-              class="btn btn-secondary mt-4">Cancelar</button>
+            <button type="submit" class="btn btn-primary mt-4">
+              {{ estadoCliente ? 'Atualizar Cliente' : 'Adicionar Cliente' }}
+            </button>
+            <button type="button" v-if="estadoCliente" @click="cancelarEdicaoCliente" class="btn btn-secondary mt-4">
+              Cancelar
+            </button>
           </form>
         </div>
       </div>
+      <h3 class="mt-4">Lista de Clientes</h3>
+      <ul class="list-group">
+        <li class="list-group-item" v-for="cliente in clientes" :key="cliente.nome">
+          <div class="row align-items-center">
+            <div class="col">
+              <p class="mb-1"><strong>Nome do Cliente:</strong> {{ cliente.nome }}</p>
+              <p class="mb-1"><strong>Contato:</strong> {{ cliente.telefone }} | {{ cliente.email }}</p>
+              <p class="mb-1"><strong>Endereço:</strong> {{ cliente.rua }}, {{ cliente.numero }}, {{ cliente.bairro }} -
+                {{ cliente.cidade }} | {{ cliente.estado }}</p>
+            </div>
+            <div class="col-auto">
+              <button @click="editarCliente(cliente)" class="btn btn-warning btn-sm mr-2">Editar</button>
+              <button @click="excluirCliente(cliente)" class="btn btn-danger btn-sm">Excluir</button>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
 
-    <h3 class="mt-4">Lista de Clientes</h3>
-    <ul class="list-group">
-      <li class="list-group-item" v-for="cliente in clientes" :key="cliente.nome">
-        <div class="row align-items-center">
-          <div class="col">
-            <p class="mb-1"><strong>Nome do Cliente:</strong> {{ cliente.nome }}</p>
-            <p class="mb-1"><strong>Contato:</strong> {{ cliente.telefone }} | {{ cliente.email }}</p>
-            <p class="mb-1"><strong>Endereço:</strong> {{ cliente.rua }} , {{ cliente.bairro }} - {{ cliente.cidade }} | {{
-              cliente.estado }}</p>
+    <div v-if="view === 'produtos'" class="my-4">
+      <h2 v-if="estadoProduto === null">Cadastro de Produtos</h2>
+      <h2 v-else>Editar Produto</h2>
+      <form @submit.prevent="estadoProduto === null ? adicionarProduto() : atualizarProduto()">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="nomeProduto">Nome do Produto: <b class="text-danger">*</b></label>
+              <input type="text" id="nomeProduto" v-model="novoProduto.nome" class="form-control" required>
+            </div>
           </div>
-          <div class="col-auto">
-            <button @click="excluirCliente(cliente)" class="btn btn-danger">Excluir</button>
-            <button @click="editarCliente(cliente)" class="btn btn-warning">Editar</button>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="codigoProduto">Código: <b class="text-danger">*</b></label>
+              <input type="text" id="codigoProduto" v-model="novoProduto.codigo" class="form-control" required>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="setorProduto">Setor: <b class="text-danger">*</b></label>
+              <select id="setorProduto" v-model="novoProduto.setor" class="form-control" required>
+                <option value="" disabled selected>Selecione um Setor</option>
+                <option value="Alimentos">Alimentos</option>
+                <option value="Bebidas">Bebidas</option>
+                <option value="Eletrônicos">Eletrônicos</option>
+                <option value="Vestuário">Vestuário</option>
+                <option value="Higiene">Higiene</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-group">
+                <label for="descricaoProduto">Descrição: <b class="text-danger">*</b></label>
+                <input type="text" id="descricaoProduto" v-model="novoProduto.descricao" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="precoProduto">Preço: <b class="text-danger">*</b></label>
+                <input type="number" id="precoProduto" v-model.number="novoProduto.preco" class="form-control" required>
+              </div>
+            </div>
+          </div>
+          <small class="form-text text-muted mt-4">Por favor, preencha todos os campos marcados com
+            <b class="text-danger">*</b>.</small>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-primary">{{ estadoProduto === null ? 'Adicionar Produto' : 'Atualizar Produto' }}</button>
+            <button type="button" v-if="estadoProduto !== null" @click="cancelarEdicaoProduto" class="btn btn-secondary ml-2">Cancelar</button>
           </div>
         </div>
-      </li>
-    </ul>
+      </form>
+
+      <h3 class="mt-4">Lista de Produtos</h3>
+      <ul class="list-group">
+        <li class="list-group-item" v-for="produto in produtos" :key="produto.nome">
+          <div class="row align-items-center">
+            <div class="col">
+              <p class="mb-1"><strong>Nome do Produto:</strong> {{ produto.nome }}</p>
+              <p class="mb-1"><strong>Codigo:</strong> {{ produto.codigo }} | <strong> Setor:</strong> {{ produto.setor }}</p>
+              <p class="mb-1"><strong>descricao:</strong> {{ produto.descricao}}</p>
+              <p class="mb-1"><strong>preco:</strong> {{ produto.preco}}</p>
+            </div>
+            <div class="col-auto">
+              <button @click="editarProduto(produto)" class="btn btn-warning mr-2">Editar</button>
+              <button @click="excluirProduto(produto)" class="btn btn-danger">Excluir</button>
+            </div>
+        </li>
+      </ul>
+    </div>
+
+    <div v-if="view === 'vendas'" class="my-4">
+      <h2>Registro de Vendas</h2>
+      <form @submit.prevent="adicionarVenda">
+        <div class="form-group">
+          <label for="clienteVenda">Cliente:</label>
+          <select id="clienteVenda" v-model="novaVenda.cliente" class="form-control" required>
+            <option v-for="cliente in clientes" :value="cliente.nome">{{ cliente.nome }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Produtos:</label>
+          <div v-for="produto in produtos" :key="produto.nome" class="form-check">
+            <input type="checkbox" :value="produto" v-model="novaVenda.produtosSelecionados" class="form-check-input">
+            <label class="form-check-label">
+              {{ produto.nome }} - R$ {{ produto.preco.toFixed(2) }}
+            </label>
+            <input type="number" v-model.number="quantidades[produto.nome]" min="1" class="form-control mt-2"
+              placeholder="Quantidade" v-if="novaVenda.produtosSelecionados.includes(produto)">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar Venda</button>
+      </form>
+
+      <h3 class="mt-4">Lista de Vendas</h3>
+      <ul class="list-group">
+        <li class="list-group-item" v-for="venda in vendas" :key="venda.id">
+          {{ venda.cliente }} comprou:
+          <ul>
+            <li v-for="produto in venda.produtos" :key="produto.nome">
+              {{ produto.nome }} - {{ produto.quantidade }} unidades - R$ {{ produto.total.toFixed(2) }}
+            </li>
+          </ul>
+          <strong>Total: R$ {{ venda.valorTotal.toFixed(2) }}</strong>
+          <button @click="removerVenda(venda)" class="btn btn-danger btn-sm float-right">Remover</button>
+        </li>
+      </ul>
+    </div>
+
     <footer class="footer mt-auto py-2 bg-info bg-opacity-25 text-white">
       <div class="container text-center">
-        <span class="text-muted">Copyright © 2024 | Versão: 2024.06.1606 | Sistema de Gerenciamento de Vendas</span>
+        <span class="text-muted">Copyright © 2024 | Versão: 2024.06.1606 | Sistema de Gerenciamento
+          de Vendas</span>
       </div>
     </footer>
   </div>
-  
+
   <script>
-    new Vue({
-      el: '#app',
-      data: {
-        view: 'clientes',
-        clientes: [],
-        estadoCliente: null,
-        novoCliente: {
-          nome: '',
-          telefone: '',
-          email: '',
-          rua: '',
-          numero: '',
-          bairro: '',
-          cidade: '',
-          estado: ''
-        }
-      },
-      methods: {
-        adicionarCliente() {
-          this.clientes.push({ ...this.novoCliente });
-          this.limparFormularioCliente();
-        },
-        excluirCliente(cliente) {
-          this.clientes = this.clientes.filter(c => c !== cliente);
-        },
-        editarCliente(cliente) {
-          this.estadoCliente = cliente;
-          this.novoCliente = { ...cliente };
-        },
-        atualizarCliente() {
-          Object.assign(this.estadoCliente, this.novoCliente);
-          this.cancelarEdicaoCliente();
-        },
-        cancelarEdicaoCliente() {
-          this.limparFormularioCliente();
-          this.estadoCliente = null;
-        },
-        limparFormularioCliente() {
-          this.novoCliente = {
-            nome: '',
-            telefone: '',
-            email: '',
-            rua: '',
-            numero: '',
-            bairro: '',
-            cidade: '',
-            estado: ''
-          };
-        },
-      }
-    });
-  </script>
+new Vue({
+  el: "#app",
+  data: {
+    view: "clientes",
+    clientes: [],
+    produtos: [],
+    vendas: [],
+    estadoCliente: null,
+    estadoProduto: null,
+    novoCliente: {
+      nome: "",
+      telefone: "",
+      email: "",
+      rua: "",
+      numero: "",
+      bairro: "",
+      cidade: "",
+      estado: "",
+    },
+    novoProduto: {
+      nome: "",
+      codigo: "",
+      setor: "",
+      descricao: "",
+      preco: 0,
+    },
+    novaVenda: {
+      cliente: "",
+      produtosSelecionados: []
+    },
+    quantidades: {},
+  },
+  methods: {
+    adicionarCliente() {
+      this.clientes.push({ ...this.novoCliente });
+      this.limparFormularioCliente();
+    },
+    excluirCliente(cliente) {
+      this.clientes = this.clientes.filter(c => c !== cliente);
+    },
+    editarCliente(cliente) {
+      this.estadoCliente = cliente;
+      this.novoCliente = { ...cliente };
+    },
+    atualizarCliente() {
+      Object.assign(this.estadoCliente, this.novoCliente);
+      this.cancelarEdicaoCliente();
+    },
+    cancelarEdicaoCliente() {
+      this.limparFormularioCliente();
+      this.estadoCliente = null;
+    },
+    limparFormularioCliente() {
+      this.novoCliente = this.getNovoClientePadrao();
+    },
+    getNovoClientePadrao() {
+      return {
+        nome: "",
+        telefone: "",
+        email: "",
+        rua: "",
+        numero: "",
+        bairro: "",
+        cidade: "",
+        estado: "",
+      };
+    },
+    adicionarProduto() {
+      this.produtos.push({ ...this.novoProduto });
+      this.limparFormularioProduto();
+    },
+    removerProduto(produto) {
+      this.produtos = this.produtos.filter(p => p !== produto);
+    },
+    editarProduto(produto) {
+      this.estadoProduto = produto;
+      this.novoProduto = { ...produto };
+    },
+    atualizarProduto() {
+      Object.assign(this.estadoProduto, this.novoProduto);
+      this.cancelarEdicaoProduto();
+    },
+    cancelarEdicaoProduto() {
+      this.limparFormularioProduto();
+      this.estadoProduto = null;
+    },
+    limparFormularioProduto() {
+      this.novoProduto = this.getNovoProdutoPadrao();
+    },
+    getNovoProdutoPadrao() {
+      return { nome: '', descricao: '', preco: 0 };
+    },
+    adicionarVenda() {
+      const vendaProdutos = this.novaVenda.produtosSelecionados.map(produto => {
+        const quantidade = this.quantidades[produto.nome] || 1;
+        return {
+          ...produto,
+          quantidade: quantidade,
+          total: produto.preco * quantidade
+        };
+      });
+
+      const valorTotal = vendaProdutos.reduce((total, produto) => total + produto.total, 0);
+
+      this.vendas.push({
+        id: Date.now(),
+        cliente: this.novaVenda.cliente,
+        produtos: vendaProdutos,
+        valorTotal: valorTotal
+      });
+
+      this.resetarNovaVenda();
+    },
+    resetarNovaVenda() {
+      this.novaVenda.cliente = '';
+      this.novaVenda.produtosSelecionados = [];
+      this.quantidades = {};
+    },
+    removerVenda(venda) {
+      this.vendas = this.vendas.filter(v => v !== venda);
+    }
+  }
+});
+</script>
+
 </body>
 
 </html>
