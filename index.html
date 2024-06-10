@@ -33,6 +33,10 @@
       </li>
     </ul>
 
+    <div v-if="view === 'inicio'" class="my-4">
+      <img src="./inicio.png" alt="Imagem de Início" class="img-fluid" style="max-width: 400px; margin: 0 auto;">
+    </div>
+
     <div v-if="view === 'clientes'" class="my-4">
       <h2 v-if="!estadoCliente">Cadastrar Clientes</h2>
       <h2 v-else>Editar Cliente</h2>
@@ -50,7 +54,7 @@
               </div>
               <div class="col-md-4">
                 <label for="emailCliente">Email: <b class="text-danger">*</b></label>
-                <input type="text" id="emailCliente" v-model="novoCliente.email" class="form-control" required />
+                <input type="email" id="emailCliente" v-model="novoCliente.email" class="form-control" required />
               </div>
             </div>
             <div class="form-group row">
@@ -121,9 +125,9 @@
           <div class="row align-items-center">
             <div class="col">
               <p class="mb-1"><strong>Nome do Cliente:</strong> {{ cliente.nome }}</p>
-              <p class="mb-1"><strong>Contato:</strong> {{ cliente.telefone }} | {{ cliente.email }}</p>
+              <p class="mb-1"><strong>Contatos:</strong> {{ cliente.telefone }} <b> Telefone: </b> {{ cliente.email }}</p>
               <p class="mb-1"><strong>Endereço:</strong> {{ cliente.rua }}, {{ cliente.numero }}, {{ cliente.bairro }} -
-                {{ cliente.cidade }} | {{ cliente.estado }}</p>
+                {{ cliente.cidade }} <b> Estado: </b> {{ cliente.estado }}</p>
             </div>
             <div class="col-auto">
               <button @click="editarCliente(cliente)" class="btn btn-warning btn-sm mr-2">Editar</button>
@@ -148,7 +152,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="codigoProduto">Código: <b class="text-danger">*</b></label>
-              <input type="text" id="codigoProduto" v-model="novoProduto.codigo" class="form-control" required>
+              <input type="number" id="codigoProduto" v-model="novoProduto.codigo" class="form-control" required>
             </div>
           </div>
           <div class="col-md-2">
@@ -197,8 +201,8 @@
             <div class="col">
               <p class="mb-1"><strong>Nome do Produto:</strong> {{ produto.nome }}</p>
               <p class="mb-1"><strong>Codigo:</strong> {{ produto.codigo }} | <strong> Setor:</strong> {{ produto.setor }}</p>
-              <p class="mb-1"><strong>descricao:</strong> {{ produto.descricao}}</p>
-              <p class="mb-1"><strong>preco:</strong> {{ produto.preco}}</p>
+              <p class="mb-1"><strong>Descrição:</strong> {{ produto.descricao}}</p>
+              <p class="mb-1"><strong>Preço:</strong> {{ produto.preco}}</p>
             </div>
             <div class="col-auto">
               <button @click="editarProduto(produto)" class="btn btn-warning mr-2">Editar</button>
@@ -210,38 +214,47 @@
 
     <div v-if="view === 'vendas'" class="my-4">
       <h2>Registro de Vendas</h2>
-      <form @submit.prevent="adicionarVenda">
-        <div class="form-group">
-          <label for="clienteVenda">Cliente:</label>
-          <select id="clienteVenda" v-model="novaVenda.cliente" class="form-control" required>
-            <option v-for="cliente in clientes" :value="cliente.nome">{{ cliente.nome }}</option>
-          </select>
+      <div class="row">
+        <div class="col-md-6">
+          <form @submit.prevent="adicionarVenda">
+            <div class="form-group">
+              <label for="clienteVenda">Selecione o cliente:</label>
+              <select id="clienteVenda" v-model="novaVenda.cliente" class="form-control" required>
+                <option v-for="cliente in clientes" :value="cliente.nome">{{ cliente.nome }}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Registrar Venda</button>
+          </form>
         </div>
-        <div class="form-group">
-          <label>Produtos:</label>
-          <div v-for="produto in produtos" :key="produto.nome" class="form-check">
-            <input type="checkbox" :value="produto" v-model="novaVenda.produtosSelecionados" class="form-check-input">
-            <label class="form-check-label">
-              {{ produto.nome }} - R$ {{ produto.preco.toFixed(2) }}
-            </label>
-            <input type="number" v-model.number="quantidades[produto.nome]" min="1" class="form-control mt-2"
-              placeholder="Quantidade" v-if="novaVenda.produtosSelecionados.includes(produto)">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Produtos:</label>
+            <div v-for="produto in produtos" :key="produto.nome" class="form-check">
+              <input type="checkbox" :value="produto" v-model="novaVenda.produtosSelecionados" class="form-check-input">
+              <label class="form-check-label">
+                {{ produto.nome }} - R$ {{ produto.preco.toFixed(2) }}
+              </label>
+              <input type="number" v-model.number="quantidades[produto.nome]" min="1" class="form-control mt-2"
+                placeholder="Quantidade do produto" v-if="novaVenda.produtosSelecionados.includes(produto)">
+            </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Registrar Venda</button>
-      </form>
-
+      </div> 
       <h3 class="mt-4">Lista de Vendas</h3>
       <ul class="list-group">
         <li class="list-group-item" v-for="venda in vendas" :key="venda.id">
-          {{ venda.cliente }} comprou:
-          <ul>
+          {{ venda.cliente }}
+          <br>
+          Histórico de compra:
+          <ul class="list-unstyled">
             <li v-for="produto in venda.produtos" :key="produto.nome">
-              {{ produto.nome }} - {{ produto.quantidade }} unidades - R$ {{ produto.total.toFixed(2) }}
+              <b>Produto: </b> {{ produto.nome }} <b> Quantidade: </b> {{ produto.quantidade }} | R$ {{ produto.total.toFixed(2) }}
             </li>
           </ul>
           <strong>Total: R$ {{ venda.valorTotal.toFixed(2) }}</strong>
-          <button @click="removerVenda(venda)" class="btn btn-danger btn-sm float-right">Remover</button>
+          <div class="col-auto">
+            <button @click="removerVenda(venda)" class="btn btn-danger btn-sm float-right">Excluir Venda</button>
+          </div>   
         </li>
       </ul>
     </div>
@@ -258,7 +271,7 @@
 new Vue({
   el: "#app",
   data: {
-    view: "clientes",
+    view: "inicio",
     clientes: [],
     produtos: [],
     vendas: [],
