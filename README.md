@@ -2,6 +2,8 @@
 
 O Sistema de Gerenciamento de Vendas é uma aplicação web desenvolvida em Vue.js que permite gerenciar clientes, produtos e vendas.
 
+![Captura de tela 2024-06-18 212454](https://github.com/amandadecassiaborges/Sistema-Gerenciamento-Vendas/assets/67706498/0725b176-79f6-4208-a0c9-bdb2604b09ef)
+
 # Funcionalidades
 
 Cadastro de clientes com informações de contato e endereço
